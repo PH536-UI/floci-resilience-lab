@@ -1,10 +1,12 @@
-# LAB SOC - Piracicaba
-SOC Lab 100% local com LocalStack + OpenLDAP + Kali.
+# LAB SOC Piracicaba
+
+Laboratorio 100% local - LocalStack + OpenLDAP + Kali
+Piracicaba/SP
 
 ## Stack
-- **floci** (localstack): Simula 100+ servicos AWS + S3 soc-evidence
-- **ad-lab-dc** (osixia/openldap): AD lab.local - users: alice/bob/carol / Password123
-- **kali-ad-lab**: Kali para ataques/defesa
+- floci (LocalStack) - AWS S3 soc-evidence
+- ad-lab-dc - AD lab.local users alice/bob/carol
+- kali-ad-lab - ataques
 
 ## Uso
 ./start-soc.sh
