@@ -1,45 +1,20 @@
-# ACTIVE DIRECTORY PENTESTING - COMPLETE BEGINNER'S GUIDE
+# 🔧 LAB FLOCI Terraform - 100 AWS Services Local
 
-![Active Directory Pentesting](IMG-20260910-WA9336.jpg)
+> Simulando AWS real localmente com FLOCI + Terraform + Docker
 
-> Master AD Pentesting from Zero to Hero. Real labs, real attacks, real defense.
+### 🇧🇷 PT-BR
+Lab completo para testar Terraform sem gastar na AWS. Roda 100 serviços AWS localmente.
 
-**[PT-BR](#-versão-em-português) | [EN](#-english-version)**
+**O que roda:**
+- FLOCI - Mock de 100 serviços AWS
+- NGINX simulando EC2 com disco cheio (cenário de falha)
+- Terraform validado localmente
 
----
+**Como rodar:**
+docker compose up -d
+curl http://localhost:4566/_floci/health
 
-### 🇧🇷 Versão em Português
-Guia completo para iniciantes em Pentest em Active Directory com laboratório SOC real.
+Stack: FLOCI | Terraform | Docker | AWS | Nginx
 
-**O que você vai aprender:**
-- Arquitetura AD & Kerberos
-- Enumeração & Recon
-- Exploração de configurações incorretas
-- Movimentação lateral e escalada de privilégios
-- Labs + Defesa e Hardening
-
-**Lab SOC - Detecção e Resposta:**
-`Kali (brute-force) -> AD lab.local -> Detecção Python (MITRE T1110.001) -> S3 soc-evidence -> Lambda auto-remediação`
-
-**Evidências no S3:**
-- `alerts/brute-force-*.json` - Alertas Nível 10
-- `incidents/INC-*.json` - Incidentes REMEDIATED
-- `logs/auth.log` - Logs brutos
-
----
-### 🇺🇸 English Version
-Complete hands-on guide for beginners in Active Directory Pentesting with a real SOC Lab.
-
-**What You Will Learn:**
-- AD Architecture & Kerberos
-- Enumeration & Recon
-- Misconfiguration Exploitation
-- Lateral Movement & Privilege Escalation
-- Labs + Defense Hardening & Interview Prep
-
-**SOC Lab - Detection & Response Pipeline:**
-`Kali brute-force -> AD lab.local -> Python Detection (MITRE T1110.001) -> S3 soc-evidence -> Lambda auto-remediate`
-
-**Tech Stack:** Active Directory, Python, Docker, AWS S3, Lambda, MITRE ATT&CK, Wazuh
-
-⭐ Star this repo if you are learning AD Pentesting!
+### 🇺🇸 EN
+Complete lab to test Terraform without AWS costs. Runs 100 AWS services locally.
