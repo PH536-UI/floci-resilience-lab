@@ -1,0 +1,51 @@
+services:
+  floci:
+    image: ghcr.io/floci-io/floci:latest
+    container_name: floci
+    hostname: floci
+    ports:
+      - "4566:4566"
+    volumes:
+      - floci-data:/data
+    restart: unless-stopped
+
+  samba-dc:
+    image: nowsci/samba-domain:4.18
+    container_name: ad-lab-dc
+    hostname: dc01
+    domainname: lab.local
+    environment:
+      - DOMAIN=LAB.LOCAL
+      - ADMIN_PASS=P@ssw0rd123!
+      - DNS_FORWARDER=8.8.8.8
+    ports:
+      - "389:389"
+      - "636:636"
+      - "88:88"
+      - "88:88/udp"
+      - "53:53"
+      - "445:445"
+    volumes:
+      - samba-data:/var/lib/samba
+      - samba-config:/etc/samba
+    privileged: true
+    restart: unless-stopped
+
+  kali-ad:
+    image: kalilinux/kali-rolling
+    container_name: kali-ad-lab
+    tty: true
+    stdin_open: true
+    depends_on:
+      - samba-dc
+      - floci
+    network_mode: "service:samba-dc"
+    command: sleep infinity
+
+volumes:
+  floci-data:
+  samba-data:
+  samba-config:
+networks:
+  default:
+    name: lab-floci-terraform_default

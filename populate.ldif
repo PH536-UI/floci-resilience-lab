@@ -1,0 +1,17 @@
+dn: ou=users,dc=lab,dc=local
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=alice,ou=users,dc=lab,dc=local
+objectClass: inetOrgPerson
+cn: alice
+sn: Silva
+uid: alice
+userPassword: Password123
+
+dn: cn=bob,ou=users,dc=lab,dc=local
+objectClass: inetOrgPerson
+cn: bob
+sn: Santos
+uid: bob
+userPassword: Password123

@@ -1,29 +1,26 @@
-version: '3.8'
 services:
   floci:
-    image: floci/floci:latest
+    image: localstack/localstack:3.6
     container_name: floci
     ports:
       - "4566:4566"
-    networks:
-      - soc-lab
+    environment:
+      - SERVICES=s3
+      - DEBUG=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   ad-lab-dc:
     image: osixia/openldap:1.5.0
     container_name: ad-lab-dc
     environment:
       - LDAP_DOMAIN=lab.local
       - LDAP_ADMIN_PASSWORD=Password123
-    networks:
-      - soc-lab
+    ports:
+      - "389:389"
   kali-ad-lab:
     image: kalilinux/kali-rolling
     container_name: kali-ad-lab
     command: sleep infinity
     depends_on:
-      - ad-lab-dc
       - floci
-    networks:
-      - soc-lab
-networks:
-  soc-lab:
-    name: lab-floci-terraform_default
+      - ad-lab-dc

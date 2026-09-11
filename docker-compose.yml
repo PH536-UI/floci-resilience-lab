@@ -1,0 +1,23 @@
+services:
+  floci:
+    image: floci/floci:latest
+    container_name: floci
+    ports:
+      - "4566:4566"
+      - "5100:5100"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
+    environment:
+      - DEBUG=0
+
+  web-producao:
+    image: nginx:alpine
+    container_name: ec2-web-disco-cheio
+    ports:
+      - "8081:80"
+    tmpfs:
+      - /tmp:size=100m
+      - /var/log/nginx:size=50m
+    depends_on:
+      - floci
