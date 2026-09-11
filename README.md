@@ -1,20 +1,19 @@
-# 🔧 LAB FLOCI Terraform - 100 AWS Services Local
+# 💥 TERRAFORM AWS FAULT INJECTION LAB
+### 100 AWS Services Mocked Locally | FLOCI + Chaos Engineering
 
-> Simulando AWS real localmente com FLOCI + Terraform + Docker
+> Testando resiliência AWS sem gastar 1 dólar | Testing AWS resilience without spending $1
 
-### 🇧🇷 PT-BR
-Lab completo para testar Terraform sem gastar na AWS. Roda 100 serviços AWS localmente.
+**Stack:** Terraform | FLOCI | Docker | AWS | Nginx | Chaos Engineering
 
-**O que roda:**
-- FLOCI - Mock de 100 serviços AWS
-- NGINX simulando EC2 com disco cheio (cenário de falha)
-- Terraform validado localmente
+### PT-BR
+Laboratório de Fault Injection que simula infra AWS completa LOCALMENTE.
+- EC2 com disco cheio (NGINX tmpfs limitado)
+- FLOCI rodando 100 serviços AWS mockados
+- Terraform validando local
 
-**Como rodar:**
+Como rodar:
 docker compose up -d
 curl http://localhost:4566/_floci/health
 
-Stack: FLOCI | Terraform | Docker | AWS | Nginx
-
-### 🇺🇸 EN
-Complete lab to test Terraform without AWS costs. Runs 100 AWS services locally.
+### EN
+Fault Injection Lab simulating full AWS locally. 100 services mocked.
