@@ -1,17 +1,8 @@
-# Lab FLOCI Terraform - SOC + AD + S3
-Lab 100% local, custo zero AWS.
+# SOC Lab - floci + AD + Kali + S3
 
-## Arquitetura
-- LocalStack 3.6 -> S3 soc-evidence versioning Enabled
-- OpenLDAP -> lab.local com alice/bob/carol
-- Kali -> ldapsearch
+Lab2: deteccao brute-force T1110.001 -> S3
+Lab3: lambda auto-remediate -> incidents/
 
-## Validado 11/09/2026 02:15 UTC
-- Bucket soc-evidence 62 bytes OK
-- AD 3 users OK
-- ldapsearch 5 entries OK
-
-## Como rodar
-./start-soc.sh
-aws --endpoint-url=http://localhost:4566 s3 ls s3://soc-evidence/
-
+s3://soc-evidence/alerts/
+s3://soc-evidence/incidents/
+s3://soc-evidence/logs/
