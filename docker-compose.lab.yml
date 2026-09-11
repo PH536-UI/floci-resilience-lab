@@ -2,13 +2,11 @@ services:
   floci:
     image: localstack/localstack:3.6
     container_name: floci
-    ports:
-      - "4566:4566"
+    ports: ["4566:4566"]
     environment:
       - SERVICES=s3
-      - DEBUG=1
-    volumes:
-      - ./localstack:/tmp/localstack
+      - PERSISTENCE=0
+      - DEBUG=0
 
   ad-lab-dc:
     image: osixia/openldap:1.5.0
@@ -17,45 +15,9 @@ services:
       - LDAP_DOMAIN=lab.local
       - LDAP_ADMIN_PASSWORD=Password123
       - LDAP_LOG_LEVEL=256
-    ports:
-      - "389:389"
+    ports: ["389:389"]
 
   kali-ad-lab:
     image: kalilinux/kali-rolling
     container_name: kali-ad-lab
     command: sleep infinity
-    depends_on:
-      - ad-lab-dc
-
-  wazuh:
-    image: wazuh/wazuh-manager:4.8.0
-    container_name: wazuh
-    ports:
-      - "1514:1514"
-      - "1515:1515"
-      - "55000:55000"
-    environment:
-      - INDEXER_URL=https://wazuh-indexer:9200
-    depends_on:
-      - ad-lab-dc
-
-  wazuh-indexer:
-    image: wazuh/wazuh-indexer:4.8.0
-    container_name: wazuh-indexer
-    environment:
-      - discovery.type=single-node
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "9200:9200"
-
-  wazuh-dashboard:
-    image: wazuh/wazuh-dashboard:4.8.0
-    container_name: wazuh-dashboard
-    ports:
-      - "5601:5601"
-    environment:
-      - INDEXER_USERNAME=admin
-      - INDEXER_PASSWORD=SecretPassword
-      - WAZUH_API_URL=https://wazuh:55000
-      - DASHBOARD_USERNAME=kibanaserver
-      - DASHBOARD_PASSWORD=kibanaserver
