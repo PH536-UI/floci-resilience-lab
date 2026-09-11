@@ -1,12 +1,17 @@
-# LAB SOC Piracicaba
+# Lab FLOCI Terraform - SOC + AD + S3
+Lab 100% local, custo zero AWS.
 
-Laboratorio 100% local - LocalStack + OpenLDAP + Kali
-Piracicaba/SP
+## Arquitetura
+- LocalStack 3.6 -> S3 soc-evidence versioning Enabled
+- OpenLDAP -> lab.local com alice/bob/carol
+- Kali -> ldapsearch
 
-## Stack
-- floci (LocalStack) - AWS S3 soc-evidence
-- ad-lab-dc - AD lab.local users alice/bob/carol
-- kali-ad-lab - ataques
+## Validado 11/09/2026 02:15 UTC
+- Bucket soc-evidence 62 bytes OK
+- AD 3 users OK
+- ldapsearch 5 entries OK
 
-## Uso
+## Como rodar
 ./start-soc.sh
+aws --endpoint-url=http://localhost:4566 s3 ls s3://soc-evidence/
+
