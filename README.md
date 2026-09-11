@@ -1,18 +1,21 @@
-# SOC Lab - floci + AD + Kali + S3
+# ACTIVE DIRECTORY PENTESTING - COMPLETE BEGINNER'S GUIDE
 
-![SOC Architecture](IMG-20260910-WA4032.jpg)
+![Active Directory Pentesting](IMG-20260910-WA9336.jpg)
 
-## Fluxo Completo - Lab 2 e 3 Finalizados
-Kali brute-force -> AD lab.local -> Detection Python (MITRE T1110.001) -> S3 soc-evidence -> Lambda auto-remediate -> Incident Report
+> Master AD Pentesting from Zero to Hero. Real labs, real attacks, real defense.
 
-## Evidencias S3
+## What You Will Learn
+- AD Architecture & Kerberos
+- Enumeration & Recon
+- Misconfigurations Exploitation
+- Lateral Movement & Privilege Escalation
+- Labs + Defense Hardening
+- Interview Prep
+
+## Lab SOC - Detection & Response
+Kali brute-force -> AD lab.local -> Detection Python (MITRE T1110.001) -> S3 soc-evidence -> Lambda auto-remediate
+
+### Evidences S3
 - alerts/brute-force-*.json Level 10
 - incidents/INC-*.json REMEDIATED
 - logs/auth.log
-
-## Validacao
-```bash
-docker compose -f docker-compose.lab.yml up -d
-python3 detect-brute-force.py
-python3 lambda-remediate/lambda_function.py
-aws --endpoint-url=http://localhost:4566 s3 ls s3://soc-evidence/ --recursive
