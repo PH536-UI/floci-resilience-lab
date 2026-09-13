@@ -5,3 +5,6 @@
 crash.log
 *.zip
 evidence/
+__pycache__/
+*.pyc
+tfplan
