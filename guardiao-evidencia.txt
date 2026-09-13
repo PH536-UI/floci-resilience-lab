@@ -1,0 +1,8 @@
+aws_dynamodb_table.guardiao_state
+aws_iam_role.lambda_role
+aws_lambda_event_source_mapping.sqs_lambda
+aws_lambda_function.guardiao_lambda
+aws_s3_bucket.terraform_state
+aws_s3_bucket_server_side_encryption_configuration.state
+aws_s3_bucket_versioning.state
+aws_sqs_queue.guardiao_queue
