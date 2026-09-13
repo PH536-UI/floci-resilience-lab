@@ -1,0 +1,36 @@
+=== EVIDÊNCIA FINAL N3 ===
+Data: dom 13 set 2026 22:42:37 UTC
+
+terraform state list (8/8):
+aws_dynamodb_table.guardiao_state
+aws_iam_role.lambda_role
+aws_lambda_event_source_mapping.sqs_lambda
+aws_lambda_function.guardiao_lambda
+aws_s3_bucket.terraform_state
+aws_s3_bucket_server_side_encryption_configuration.state
+aws_s3_bucket_versioning.state
+aws_sqs_queue.guardiao_queue
+
+SQS:
+{
+    "QueueUrls": [
+        "http://localhost:4566/000000000000/guardiao-queue-ph"
+    ]
+}
+
+DynamoDB scan ph-007:
+{
+    "Items": [
+        {
+            "id": {
+                "S": "ph-007"
+            },
+            "message": {
+                "NULL": true
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}

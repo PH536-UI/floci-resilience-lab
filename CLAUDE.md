@@ -11,7 +11,4 @@
 - Fix: apos restart do Floci e recriar o bucket manualmente (`aws s3 mb`), usar `terraform import aws_s3_bucket.terraform_state <nome-do-bucket>` para realinhar o state, em vez de deixar o `apply` tentar criar o recurso do zero.
 - Atenção: comandos AWS CLI no LocalStack precisam de `--region sa-east-1` explícito — sem isso, `list-queues`/`list-tables` retornam vazio mesmo com os recursos existindo (caem na região default do CLI).
 
-## Known Issues (Atualizado 2)
-- Restart do Floci apaga o bucket S3 do Terraform state, mas o Terraform ainda acha que o gerencia (drift). Rodar `terraform apply` direto após um restart falha com `BucketAlreadyOwnedByYou` se o bucket for recriado manualmente antes, ou erros de state divergente.
-- Fix: apos restart do Floci e recriar o bucket manualmente (`aws s3 mb`), usar `terraform import aws_s3_bucket.terraform_state <nome-do-bucket>` para realinhar o state, em vez de deixar o `apply` tentar criar o recurso do zero.
-- Atenção: comandos AWS CLI no LocalStack precisam de `--region sa-east-1` explícito — sem isso, `list-queues`/`list-tables` retornam vazio mesmo com os recursos existindo (caem na região default do CLI).
+
