@@ -1,26 +1,18 @@
-# 💥 floci-resilience-lab
+# Projeto Guardiao
 
-### 100 AWS Services Mocked Locally | Fault Injection + Chaos Engineering
-**Testando resiliencia AWS sem gastar $1**
+Pipeline serverless SQS -> Lambda -> DynamoDB, testado em ambiente LocalStack (Floci) e compativel com AWS real (sa-east-1).
 
-Stack: Terraform | FLOCI | Docker | AWS | Nginx | Chaos Engineering
+## Arquitetura
+- SQS: fila guardiao-queue-ph recebe mensagens
+- Lambda: guardiao-processor-ph processa e persiste
+- DynamoDB: guardiao-state-ph armazena estado
+- S3: bucket versionado com SSE para state do Terraform
 
-## PT-BR - O que e?
-Laboratorio de Fault Injection que simula infra AWS completa LOCALMENTE.
-- EC2 com disco cheio (Nginx tmpfs limitado)
-- FLOCI rodando 100 servicos AWS mockados
-- Terraform validando local
-- Lambda Python auto-remediacao
+## Stack
+Terraform - Python 3.11 - boto3 - AWS SQS/Lambda/DynamoDB/S3
 
-> Roda 100% offline. 0 custo AWS.
+## Evidencia de Deploy
+Ver guardiao-evidencia.txt para output completo do terraform state list, scan do DynamoDB, e listagens de S3/SQS.
 
-## Como rodar
-docker compose up -d
-curl http://localhost:4566/_floci/health
-cd terraform && terraform init && terraform plan
-
-## EN
-Fault Injection Lab simulating full AWS locally. 100 services mocked.
-
-## Autor
-Paulo Henrique Pereira | 4x AWS Certified | SRE | Piracicaba-SP
+## Known Issues
+Ver secao "Known Issues (Atualizado)" no CLAUDE.md - timeout Lambda->DynamoDB resolvido, causa raiz documentada.
