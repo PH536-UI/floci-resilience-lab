@@ -1,0 +1,8 @@
+NIVEL 4 FLOCI - GUARDIÃO DLQ
+Provider switch: var.is_local ? test : null
+Recursos: 9
+- aws_sqs_queue.guardiao_dlq
+- aws_sqs_queue.guardiao_queue_v2 -> redrive to DLQ max 3
+SQS Local: 3 queues ativas
+RedrivePolicy: {"deadLetterTargetArn":"arn:aws:sqs:sa-east-1:000000000000:guardiao-dlq-ph","maxReceiveCount":3}
+Data: $(date)

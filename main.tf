@@ -1,40 +1,9 @@
-provider "aws" {
-  region                      = "sa-east-1"
-  access_key                  = "test"
-  secret_key                  = "test"
-  skip_credentials_validation = true
-  skip_metadata_api_check     = true
-  skip_requesting_account_id  = true
-  s3_use_path_style           = true
-  endpoints {
-    s3       = "http://localhost:4566"
-    sts      = "http://localhost:4566"
-    dynamodb = "http://localhost:4566"
-    iam      = "http://localhost:4566"
-    sqs      = "http://localhost:4566"
-    lambda   = "http://localhost:4566"
-  }
-  default_tags {
-    tags = { Project = "Guardião", Owner = "PH" }
-  }
+# SQS Principal
+resource "aws_sqs_queue" "guardiao_queue" {
+  name = "guardiao-queue-ph"
 }
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "ph-terraform-state-536"
-}
-resource "aws_s3_bucket_versioning" "state" {
-  bucket = aws_s3_bucket.terraform_state.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
-  bucket = aws_s3_bucket.terraform_state.id
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
-}
+
+# DynamoDB - mantem hash id igual ao existente
 resource "aws_dynamodb_table" "guardiao_state" {
   name         = "guardiao-state-ph"
   billing_mode = "PAY_PER_REQUEST"
@@ -44,6 +13,8 @@ resource "aws_dynamodb_table" "guardiao_state" {
     type = "S"
   }
 }
+
+# IAM
 resource "aws_iam_role" "lambda_role" {
   name = "guardiao-lambda-role"
   assume_role_policy = jsonencode({
@@ -55,25 +26,63 @@ resource "aws_iam_role" "lambda_role" {
     }]
   })
 }
-resource "aws_sqs_queue" "guardiao_queue" {
-  name = "guardiao-queue-ph"
+
+resource "aws_iam_role_policy_attachment" "lambda_basic" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
+
+resource "aws_iam_role_policy" "lambda_extra" {
+  name = "guardiao-extra-ph"
+  role = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"]
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan"]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Lambda - mantem nome igual ao existente
 resource "aws_lambda_function" "guardiao_lambda" {
   function_name = "guardiao-processor-ph"
   role          = aws_iam_role.lambda_role.arn
   handler       = "index.handler"
   runtime       = "python3.11"
   filename      = "lambda.zip"
-  source_code_hash = filebase64sha256("lambda.zip")
   timeout       = 30
   environment {
     variables = {
-      TABLE_NAME       = aws_dynamodb_table.guardiao_state.name
+      TABLE_NAME       = "guardiao-state-ph"
       AWS_ENDPOINT_URL = "http://172.17.0.2:4566"
     }
   }
 }
+
 resource "aws_lambda_event_source_mapping" "sqs_lambda" {
   event_source_arn = aws_sqs_queue.guardiao_queue.arn
   function_name    = aws_lambda_function.guardiao_lambda.arn
+  batch_size       = 10
+}
+
+# NIVEL 4: DLQ + V2
+resource "aws_sqs_queue" "guardiao_dlq" {
+  name = "guardiao-dlq-ph"
+}
+
+resource "aws_sqs_queue" "guardiao_queue_v2" {
+  name = "guardiao-queue-ph-v2"
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.guardiao_dlq.arn
+    maxReceiveCount     = 3
+  })
 }
